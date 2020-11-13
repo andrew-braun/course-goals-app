@@ -19,7 +19,10 @@ export default function App() {
 	};
 
 	const updateGoalList = () => {
-		setGoalList((goalList) => [...goalList, enteredGoal]);
+		setGoalList((goalList) => [
+			...goalList,
+			{ id: (Math.random() * 1000).toString(), value: enteredGoal },
+		]);
 		console.log(goalList);
 	};
 
@@ -34,13 +37,15 @@ export default function App() {
 				/>
 				<Button title="ADD" onPress={updateGoalList} />
 			</View>
-			<ScrollView>
-				{goalList.map((goal, index) => (
-					<View style={styles.goalItem} key={index}>
-						<Text>{goal}</Text>
+			<FlatList
+				keyExtractor={(item, index) => item.id}
+				data={goalList}
+				renderItem={(itemData) => (
+					<View style={styles.goalItem}>
+						<Text>{itemData.item.value}</Text>
 					</View>
-				))}
-			</ScrollView>
+				)}
+			/>
 		</View>
 	);
 }
